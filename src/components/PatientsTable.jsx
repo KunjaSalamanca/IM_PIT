@@ -17,16 +17,16 @@ function PatientsTable() {
 
     async function fetchPatients() {
         const { data } = await supabase
-           .from("patients")
-           .select("*");
+          .from("patient")
+          .select("*");
         setPatients(data);
     }
     const handleDelete = async (id) => {
         try {
             const { error } = await supabase
-               .from("patients")
-               .delete()
-               .eq("patient_number", id);
+              .from("patient")
+              .delete()
+              .eq("patient_no", id);
             if (error) {
                 console.error(error);
             } else {
@@ -41,8 +41,17 @@ function PatientsTable() {
     };
 
     return (
-        <Container>
-            <Table>
+        <Container maxWidth="false" style={{ height: "100vh" }}>
+      <h1>Patients</h1>
+      <Table style={{
+          backgroundColor: '#98FF98',
+          margin: 'auto',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '1500px',borderRadius: '10px', border: 'none'
+      }}>
                 <TableHead>
                     <TableRow>
                         <TableCell />
@@ -52,76 +61,48 @@ function PatientsTable() {
                         <TableCell>Address</TableCell>
                         <TableCell>Telephone Number</TableCell>
                         <TableCell>Date of Birth</TableCell>
-                        <TableCell>Sex</TableCell>
+                        <TableCell>Gender</TableCell>
                         <TableCell>Marital Status</TableCell>
                         <TableCell>Date Registered</TableCell>
-                        <TableCell>NOK ID</TableCell>
-                        <TableCell>Doctor ID</TableCell>
-                        <TableCell>Clinic ID</TableCell>
-                        <TableCell>Action</TableCell>
+                        <TableCell>Next of Kin Name</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {patients.map((patient, index) => (
-                        <React.Fragment key={patient.patient_number}>
+                        <React.Fragment key={patient.patient_no}>
                             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                                 <TableCell>
                                     <IconButton
                                         aria-label="expand row"
                                         size="small"
-                                        onClick={() => handleOpen(patient.patient_number)}
+                                        onClick={() => handleOpen(patient.patient_no)}
                                     >
-                                        {open[patient.patient_number]? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        {open[patient.patient_no]? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                     </IconButton>
                                 </TableCell>
-                                <TableCell>{patient.patient_number}</TableCell>
+                                <TableCell>{patient.patient_no}</TableCell>
                                 <TableCell>{patient.first_name}</TableCell>
                                 <TableCell>{patient.last_name}</TableCell>
                                 <TableCell>{patient.address}</TableCell>
-                                <TableCell>{patient.telephone_number}</TableCell>
-                                <TableCell>{patient.date_of_birth}</TableCell>
-                                <TableCell>{patient.sex}</TableCell>
+                                <TableCell>{patient.tel_number}</TableCell>
+                                <TableCell>{patient.birthdate}</TableCell>
+                                <TableCell>{patient.gender}</TableCell>
                                 <TableCell>{patient.marital_status}</TableCell>
                                 <TableCell>{patient.date_registered}</TableCell>
-                                <TableCell>{patient.nok_id}</TableCell>
-                                <TableCell>{patient.doctor_id}</TableCell>
-                                <TableCell>{patient.clinic_id}</TableCell>
+                                <TableCell>{patient.nok_name}</TableCell>
                                 <TableCell>
-                                    <Button variant="contained" color="error" onClick={() => handleDelete(patient.patient_number)}>
+                                    <Button variant="contained" color="error" onClick={() => handleDelete(patient.patient_no)}>
                                         Delete
                                     </Button>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={13}>
-                                    <Collapse in={open[patient.patient_number]} timeout="auto" unmountOnExit>
+                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                                    <Collapse in={open[patient.patient_no]} timeout="auto" unmountOnExit>
                                         <Box sx={{ margin: 1 }}>
                                         <Typography variant="h6" gutterBottom component="div">
                                                 Patient Details
                                             </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Next of Kin:
-                                            </Typography>
-                                            <Table size="small" aria-label="nok">
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell>NOK First Name</TableCell>
-                                                        <TableCell>NOK Last Name</TableCell>
-                                                        <TableCell>Relationship</TableCell>
-                                                        <TableCell>NOK Telephone Number</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <TableRow key={patient.nok_id}>
-                                                        <TableCell component="th" scope="row">
-                                                            {patient.nok_fname}
-                                                        </TableCell>
-                                                        <TableCell>{patient.nok_lname}</TableCell>
-                                                        <TableCell>{patient.relationship}</TableCell>
-                                                        <TableCell>{patient.nok_tnum}</TableCell>
-                                                    </TableRow>
-                                                </TableBody>
-                                            </Table>
                                         </Box>
                                     </Collapse>
                                 </TableCell>
@@ -130,29 +111,6 @@ function PatientsTable() {
                     ))}
                 </TableBody>
             </Table>
-            <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
-                <Grid item>
-                    <Link to='/dashboard'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Back to Dashboard
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/patients'>
-                        <Button variant="contained" color="primary" type="submit">
-                            New Patients
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/appointments'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Go to Appointment
-                        </Button>
-                    </Link>
-                </Grid>
-            </Grid>
         </Container>
     );
 }

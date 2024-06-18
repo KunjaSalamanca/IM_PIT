@@ -1,270 +1,201 @@
-import { Button, Grid, TextField, Container, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Button, Grid, TextField, Container } from "@mui/material";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../Client";
 
-function Staff() {
-    const [staff, setStaff] = useState([]);
-    const [staffs, setStaffs] = useState({
-        staff_number: "",
-        last_name: "",
-        first_name: "",
-        address: "",
-        telephone_number: "",
-        date_of_birth: "",
-        sex: "",
-        nin: "",
-        position_held: "",
-        current_salary: "",
-        salary_scale: "",
-        qualifications: "",
-        work_experience: "",
-        hours_per_week: "",
-        contract_type: "",
-        salary_payment: "",
-    });
+function AddStaff() {
+  const [staff, setStaff] = useState({
+    staff_no: "",
+    staff_name: "",
+    address: "",
+    tel_no: "",
+    birthdate: "",
+    gender: "",
+    NIN: "",
+    position: "",
+    current_salary: 0,
+    salary_scale: "",
+    work_exp: 0,
+    weekly_hours: 0,
+    contract_type: "",
+  });
 
-    useEffect(() => {
-        fetchStaff();
-    }, []);
-
-    async function fetchStaff() {
-        const { data } = await supabase
-            .from("staff")
-            .select("*");
-        setStaff(data);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase
+      .from("Staff")
+      .insert([staff])
+      .single();
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(data);
+        setStaff({
+          staff_no: "",
+          staff_name: "",
+          address: "",
+          tel_no: "",
+          birthdate: "",
+          gender: "",
+          NIN: "",
+          position: "",
+          current_salary: 0,
+          salary_scale: "",
+          work_exp: 0,
+          weekly_hours: 0,
+          contract_type: "",
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const { data, error } = await supabase
-                .from("staff")
-                .insert([staffs])
-                .single();
-            if (error) {
-                console.error(error);
-            } else {
-                console.log(data);
-                setStaffs({
-                    staff_number: "",
-                    last_name: "",
-                    first_name: "",
-                    address: "",
-                    telephone_number: "",
-                    date_of_birth: "",
-                    sex: "",
-                    nin: "",
-                    position_held: "",
-                    current_salary: "",
-                    salary_scale: "",
-                    qualifications: "",
-                    work_experience: "",
-                    hours_per_week: "",
-                    contract_type: "",
-                    salary_payment: "",
-                });
-                fetchStaff(); // fetch staff again to update the table
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  const handleChange = (event) => {
+    setStaff({...staff, [event.target.name]: event.target.value });
+  };
 
-    const handleChange = (event) => {
-        setStaffs({ ...staffs, [event.target.name]: event.target.value });
-    };
-
-    return (
-        <Container>
+  return (
+    <Container maxWidth="false" style={{ height: "100vh" }}>
+      <Grid container xs={12} style={{
+          backgroundColor: '#98FF98',
+          margin: 'auto',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '1000px',borderRadius: '10px', border: 'none'
+      }}>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                label="Staff No"
+                name="staff_no"
+                value={staff.staff_no}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Staff Name"
+                name="staff_name"
+                value={staff.staff_name}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Address"
+                name="address"
+                value={staff.address}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Tel No"
+                name="tel_no"
+                value={staff.tel_no}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Birthdate"
+                name="birthdate"
+                value={staff.birthdate}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Gender"
+                name="gender"
+                value={staff.gender}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="NIN"
+                name="nin"
+                value={staff.nin}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Position"
+                name="position"
+                value={staff.position}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Current Salary"
+                name="current_salary"
+                value={staff.current_salary}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Salary Scale"
+                name="salary_scale"
+                value={staff.salary_scale}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Work Exp"
+                name="work_exp"
+                value={staff.work_exp}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Weekly Hours"
+                name="weekly_hours"
+                value={staff.weekly_hours}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Contract Type"
+                name="contract_type"
+                value={staff.contract_type}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
             <Grid item xs={12}>
-                <h2>Staff</h2>
-                <form onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Staff Number"
-                                name="staff_number"
-                                value={staff.staff_number}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Last Name"
-                                name="last_name"
-                                value={staff.last_name}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="First Name"
-                                name="first_name"
-                                value={staff.first_name}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Address"
-                                name="address"
-                                value={staff.address}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Telephone Number"
-                                name="telephone_number"
-                                value={staff.telephone_number}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Date of Birth"
-                                name="date_of_birth"
-                                value={staff.date_of_birth}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Sex"
-                                name="sex"
-                                value={staff.sex}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="NIN"
-                                name="nin"
-                                value={staff.nin}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Position Held"
-                                name="position_held"
-                                value={staff.position_held}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Current Salary"
-                                name="current_salary"
-                                value={staff.current_salary}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Salary Scale"
-                                name="salary_scale"
-                                value={staff.salary_scale}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Qualification"
-                                name="qualifications"
-                                value={staff.qualifications}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Work Experience"
-                                name="work_experience"
-                                value={staff.work_experience}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Hours per Week"
-                                name="hours_per_week"
-                                value={staff.hours_per_week}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Contract Type"
-                                name="contract_type"
-                                value={staff.contract_type}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Salary Payment"
-                                name="salary_payment"
-                                value={staff.salary_payment}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary">
-                                Submit
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </form>
+              <Button type="submit"variant="contained" color="primary">
+                Add Staff
+              </Button>
             </Grid>
-            <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
-                <Grid item>
-                    <Link to='/dashboard'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Back to Dashboard
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/staff'>
-                        <Button variant="contained" color="primary" type="submit">
-                            New Staff
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/stable'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Check Staff
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/appointments'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Go to Appointment
-                        </Button>
-                    </Link>
-                </Grid>
-            </Grid>
-        </Container>
-    );
+          </Grid>
+        </form>
+      </Grid>
+    </Container>
+  );
 }
 
-export default Staff;
+export default AddStaff;

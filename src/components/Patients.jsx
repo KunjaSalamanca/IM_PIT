@@ -6,18 +6,16 @@ import supabase from "../Client";
 function Patients() {
     const [patients, setPatients] = useState([]);
     const [patient, setPatient] = useState({
-        patient_number: "",
+        patient_no: "",
         first_name: "",
         last_name: "",
         address: "",
-        telephone_number: "",
-        date_of_birth: "",
-        sex: "",
+        tel_number: "",
+        birthdate: "",
+        gender: "",
         marital_status: "",
         date_registered: "",
-        nok_id: "",
-        doctor_id: "",
-        clinic_id: "",
+        nok_name: "",
     });
 
     console.log(patients);
@@ -28,8 +26,8 @@ function Patients() {
 
     async function fetchPatients() {
         const { data } = await supabase
-            .from("patients")
-            .select("*");
+           .from("patient")
+           .select("*");
         setPatients(data);
     }
 
@@ -37,26 +35,24 @@ function Patients() {
         event.preventDefault();
         try {
             const { data, error } = await supabase
-                .from("patients")
-                .insert([patient])
-                .single();
+               .from("patient")
+               .insert([patient])
+               .single();
             if (error) {
                 console.error(error);
             } else {
                 console.log(data);
                 setPatient({
-                    patient_number: "",
+                    patient_no: "",
                     first_name: "",
                     last_name: "",
                     address: "",
-                    telephone_number: "",
-                    date_of_birth: "",
-                    sex: "",
+                    tel_number: "",
+                    birthdate: "",
+                    gender: "",
                     marital_status: "",
                     date_registered: "",
-                    nok_id: "",
-                    doctor_id: "",
-                    clinic_id: "",
+                    nok_name: "",
                 });
                 fetchPatients(); // fetch patients again to update the table
             }
@@ -66,20 +62,27 @@ function Patients() {
     };
 
     const handleChange = (event) => {
-        setPatient({ ...patient, [event.target.name]: event.target.value });
+        setPatient({...patient, [event.target.name]: event.target.value });
     };
 
     return (
-        <Container>
-            <Grid item xs={12}>
-            <h2>New Patient</h2>
+        <Container maxWidth="false" style={{ height: "100vh" }}>
+      <Grid container xs={12} style={{
+          backgroundColor: '#98FF98',
+          margin: 'auto',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '1000px',borderRadius: '10px', border: 'none'
+      }}>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
                                 label="Patient Number"
-                                name="patient_number"
-                                value={patient.patient_number}
+                                name="patient_no"
+                                value={patient.patient_no}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -114,8 +117,8 @@ function Patients() {
                         <Grid item xs={6}>
                             <TextField
                                 label="Telephone Number"
-                                name="telephone_number"
-                                value={patient.telephone_number}
+                                name="tel_number"
+                                value={patient.tel_number}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -123,17 +126,17 @@ function Patients() {
                         <Grid item xs={6}>
                             <TextField
                                 label="Date of Birth"
-                                name="date_of_birth"
-                                value={patient.date_of_birth}
+                                name="birthdate"
+                                value={patient.birthdate}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label="Sex"
-                                name="sex"
-                                value={patient.sex}
+                                label="Gender"
+                                name="gender"
+                                value={patient.gender}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -158,27 +161,9 @@ function Patients() {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label="NOK ID"
-                                name="nok_id"
-                                value={patient.nok_id}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Doctor ID"
-                                name="doctor_id"
-                                value={patient.doctor_id}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="Clinic ID"
-                                name="clinic_id"
-                                value={patient.clinic_id}
+                                label="Next of Kin Name"
+                                name="nok_name"
+                                value={patient.nok_name}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -190,29 +175,6 @@ function Patients() {
                         </Grid>
                     </Grid>
                 </form>
-            </Grid>
-            <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
-                <Grid item>
-                    <Link to='/dashboard'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Back to Dashboard
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/ptable'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Check Patients
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/appointments'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Go to Appointment
-                        </Button>
-                    </Link>
-                </Grid>
             </Grid>
         </Container>
     );

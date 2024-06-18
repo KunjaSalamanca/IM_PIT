@@ -11,17 +11,17 @@ function RequisitionsTable() {
 
     async function fetchRequisitions() {
         const { data } = await supabase
-           .from("Requisitions")
-           .select("*");
+          .from("ward_requisition") // use the correct table name
+          .select("*");
         setRequisitions(data);
     }
 
     const handleDelete = async (id) => {
         try {
             const { error } = await supabase
-               .from("Requisitions")
-               .delete()
-               .eq("Requisition_ID", id);
+              .from("ward_requisition") // use the correct table name
+              .delete()
+              .eq("Requisition_ID", id);
             if (error) {
                 console.error(error);
             } else {
@@ -41,14 +41,12 @@ function RequisitionsTable() {
                         <TableCell>Supplier ID</TableCell>
                         <TableCell>Ward Number</TableCell>
                         <TableCell>Requisition Date</TableCell>
-                        <TableCell>Non Surgical Item No</TableCell>
-                        <TableCell>Surgical Item No</TableCell>
-                        <TableCell>Pharmaceutical Drug No</TableCell>
+                        <TableCell>Item No</TableCell>
+                        <TableCell>Drug No</TableCell>
                         <TableCell>Item Description</TableCell>
                         <TableCell>Quantity</TableCell>
                         <TableCell>Unit Price</TableCell>
                         <TableCell>Total Price</TableCell>
-                        <TableCell>Action</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -58,9 +56,8 @@ function RequisitionsTable() {
                             <TableCell>{requisition.supplier_id}</TableCell>
                             <TableCell>{requisition.ward_number}</TableCell>
                             <TableCell>{requisition.requisition_date}</TableCell>
-                            <TableCell>{requisition.non_surgical_item_no}</TableCell>
-                            <TableCell>{requisition.surgical_item_no}</TableCell>
-                            <TableCell>{requisition.pharmaceutical_drug_no}</TableCell>
+                            <TableCell>{requisition.item_no}</TableCell>
+                            <TableCell>{requisition.drug_no}</TableCell>
                             <TableCell>{requisition.item_description}</TableCell>
                             <TableCell>{requisition.quantity}</TableCell>
                             <TableCell>{requisition.unit_price}</TableCell>

@@ -1,33 +1,34 @@
 import { Button, Grid, TextField, Container } from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import supabase from "../Client";
 
-function NextOfKin() {
-  const [nextOfKin, setNextOfKin] = useState({
-    nok_name: "",
-    nok_relationship: "",
-    address: "",
-    tel_no: "",
-    nok_id: "",
+function Outpatient() {
+  const [outPatient, setOutPatient] = useState({
+    op_fname: "",
+    dp_name: "",
+    clinic_number: "",
+    location: "",
+    total_appointment: 0,
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const { data, error } = await supabase
-        .from("next_of_kin")
-        .insert([nextOfKin])
-        .single();
+       .from("outpatient")
+       .insert([outPatient])
+       .single();
       if (error) {
         console.error(error);
       } else {
         console.log(data);
-        setNextOfKin({
-          nok_name: "",
-          nok_relationship: "",
-          address: "",
-          tel_no: "",
-          nok_id: "",
+        setOutPatient({
+          op_fname: "",
+          dp_name: "",
+          clinic_number: "",
+          location: "",
+          total_appointment: 0,
         });
       }
     } catch (error) {
@@ -36,8 +37,9 @@ function NextOfKin() {
   };
 
   const handleChange = (event) => {
-    setNextOfKin({ ...nextOfKin, [event.target.name]: event.target.value });
+    setOutPatient({...outPatient, [event.target.name]: event.target.value });
   };
+
   return (
     <Container maxWidth="false" style={{ height: "100vh" }}>
       <Grid container xs={12} style={{
@@ -53,52 +55,52 @@ function NextOfKin() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                label="Name"
-                name="nok_name"
-                value={nextOfKin.nok_name}
+                label="First Name"
+                name="op_fname"
+                value={outPatient.op_fname}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Relationship"
-                name="nok_relationship"
-                value={nextOfKin.nok_relationship}
+                label="Doctor's Name"
+                name="dp_name"
+                value={outPatient.dp_name}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Address"
-                name="address"
-                value={nextOfKin.address}
+                label="Clinic Number"
+                name="clinic_number"
+                value={outPatient.clinic_number}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Telephone Number"
-                name="tel_no"
-                value={nextOfKin.tel_no}
+                label="Location"
+                name="location"
+                value={outPatient.location}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Next of Kin ID"
-                name="nok_id"
-                value={nextOfKin.nok_id}
+                label="Total Appointments"
+                name="total_appointment"
+                value={outPatient.total_appointment}
                 onChange={handleChange}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
-                Add Next of Kin
+                Add Outpatient
               </Button>
             </Grid>
           </Grid>
@@ -108,4 +110,4 @@ function NextOfKin() {
   );
 }
 
-export default NextOfKin;
+export default Outpatient;

@@ -1,153 +1,97 @@
-import { Button, Grid, Box, Container, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Typography, Collapse } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Container, Table, TableHead, TableRow, TableCell, Grid, TableBody, Link, Paper } from "@mui/material";
+import { useState, useEffect } from "react";
 import supabase from "../Client";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+export default function StaffTable() {
+  const [staff, setStaff] = useState([]);
 
-function StaffTable() {
-    const [staff, setStaff] = useState([]);
-    const [open, setOpen] = useState({});
+  console.log(staff);
 
-    console.log(staff);
+  useEffect(() => {
+    fetchStaff();
+  }, []);
 
-    useEffect(() => {
-        fetchStaff();
-    }, []);
-
-    async function fetchStaff() {
-        const { data } = await supabase
-            .from("staff")
-            .select("*");
-        setStaff(data);
+  async function fetchStaff() {
+    const { data, error } = await supabase
+    .from("staff")
+    .select("*");
+    if (error) {
+      console.error(error);
+    } else {
+      setStaff(data);
     }
-    const handleDelete = async (id) => {
-        try {
-            const { error } = await supabase
-                .from("staff")
-                .delete()
-                .eq("staff_number", id);
-            if (error) {
-                console.error(error);
-            } else {
-                fetchStaff(); // fetch staff again to update the table
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    const handleOpen = (id) => {
-        setOpen((prevOpen) => ({ ...prevOpen, [id]: !prevOpen[id] }));
-    };
+  }
 
-    return (
-        <Container>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>Staff Number</TableCell>
-                        <TableCell>Last Name</TableCell>
-                        <TableCell>First Name</TableCell>
-                        <TableCell>Address</TableCell>
-                        <TableCell>Telephone Number</TableCell>
-                        <TableCell>Date of Birth</TableCell>
-                        <TableCell>Sex</TableCell>
-                        <TableCell>NIN</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {staff && staff.map((staffMember, index) => (
-                        <React.Fragment key={staffMember.staff_number}>
-                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                                <TableCell>
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => handleOpen(staffMember.staff_number)}
-                                    >
-                                        {open[staffMember.staff_number] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell>{staffMember.staff_number}</TableCell>
-                                <TableCell>{staffMember.last_name}</TableCell>
-                                <TableCell>{staffMember.first_name}</TableCell>
-                                <TableCell>{staffMember.address}</TableCell>
-                                <TableCell>{staffMember.telephone_number}</TableCell>
-                                <TableCell>{staffMember.date_of_birth}</TableCell>
-                                <TableCell>{staffMember.sex}</TableCell>
-                                <TableCell>{staffMember.nin}</TableCell>
-                                <TableCell>
-                                    <Button variant="contained" color="error" onClick={() => handleDelete(staffMember.staff_number)}>
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={17}>
-                                    <Collapse in={open[staffMember.staff_number]} timeout="auto" unmountOnExit>
-                                        <Box sx={{ margin: 1 }}>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Staff Details
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Position Held: {staffMember.position_held}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Current Salary: {staffMember.current_salary}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Salary Scale: {staffMember.salary_scale}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Qualifications: {staffMember.qualifications}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Work Experience: {staffMember.work_experience}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Hours per Week: {staffMember.hours_per_week}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Contract Type: {staffMember.contract_type}
-                                            </Typography>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Salary Payment: {staffMember.salary_payment}
-                                            </Typography>
-                                        </Box>
-                                    </Collapse>
-                                </TableCell>
-                            </TableRow>
-                        </React.Fragment>
-                    ))}
-                </TableBody>
-            </Table>
-            <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
-                <Grid item>
-                    <Link to='/dashboard'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Back to Dashboard
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/staff'>
-                        <Button variant="contained" color="primary" type="submit">
-                            New Staff
-                        </Button>
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link to='/appointments'>
-                        <Button variant="contained" color="primary" type="submit">
-                            Go to Appointment
-                        </Button>
-                    </Link>
-                </Grid>
-            </Grid>
-        </Container>
-    );
+  const handleDelete = async (staff_no) => {
+    try {
+      const { error } = await supabase
+      .from("staff")
+      .delete()
+      .eq("staff_no", staff_no);
+      if (error) {
+        console.error(error);
+      } else {
+        fetchStaff();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <Container maxWidth="false" style={{ height: "100vh" }}>
+      <h1>Staff</h1>
+      <Table style={{
+          backgroundColor: '#98FF98',
+          margin: 'auto',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '1500px',borderRadius: '10px', border: 'none'
+      }}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Staff No</TableCell>
+            <TableCell>Staff Name</TableCell>
+            <TableCell>Address</TableCell>
+            <TableCell>Tel No</TableCell>
+            <TableCell>Birthdate</TableCell>
+            <TableCell>Gender</TableCell>
+            <TableCell>NIN</TableCell>
+            <TableCell>Position</TableCell>
+            <TableCell>Current Salary</TableCell>
+            <TableCell>Salary Scale</TableCell>
+            <TableCell>Work Exp</TableCell>
+            <TableCell>Weekly Hours</TableCell>
+            <TableCell>Contract Type</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {staff.map((staffMember, index) => (
+            <TableRow key={`row-${index}`}>
+              <TableCell>{staffMember.staff_no}</TableCell>
+              <TableCell>{staffMember.staff_name}</TableCell>
+              <TableCell>{staffMember.address}</TableCell>
+              <TableCell>{staffMember.tel_no}</TableCell>
+              <TableCell>{staffMember.birthdate}</TableCell>
+              <TableCell>{staffMember.gender}</TableCell>
+              <TableCell>{staffMember.nin}</TableCell>
+              <TableCell>{staffMember.position}</TableCell>
+              <TableCell>{staffMember.current_salary}</TableCell>
+              <TableCell>{staffMember.salary_scale}</TableCell>
+              <TableCell>{staffMember.work_exp}</TableCell>
+              <TableCell>{staffMember.weekly_hours}</TableCell>
+              <TableCell>{staffMember.contract_type}</TableCell>
+              <TableCell>
+                <Button variant="contained" color="error" onClick={() => handleDelete(staffMember.staff_no)}>
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Container>
+  );
 }
-
-export default StaffTable;
