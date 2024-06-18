@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4)
   },
   logo: {
-    width: 100,
+    width: 300,
     height: 100,
     marginBottom: theme.spacing(2)
   }
@@ -32,8 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Signup() {
   const classes = useStyles();
-  const [name, setName] = useState('');
-  const [nameError, setnameError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
@@ -49,11 +47,6 @@ export default function Signup() {
       const { user, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        options:{
-          data:{
-          first_name: name
-          }
-        }
       });
 
       if (error) {
@@ -66,9 +59,7 @@ export default function Signup() {
     }
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value)
-  };
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value)
@@ -107,35 +98,45 @@ export default function Signup() {
       setConfirmPasswordError('');
     }
   };
-  
+
   return (
-    <Container maxWidth='xs' backgroundcolor='primary'>
-      <Paper className={classes.paper} elevation={3} >
-        <img className={classes.logo} src='/n1.gif' alt='logo' width='50' height='50' />
+    <Container maxWidth='false' style={{ height: '100vh', backgroundColor: 'black' }}>
+            <Paper className={classes.paper} elevation={5} style={{
+                backgroundColor: 'orange',
+                margin: 'auto',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                height: '500px',
+                width: '500px'
+            }}>
         <Typography variant="h4" align="center" gutterBottom>
           Sign up
         </Typography>
         <form className={classes.form}>
-          <TextField label='Name' variant="outlined" fullWidth value={name} onChange={handleNameChange} error={Boolean(nameError)} helperText={nameError} />
           <TextField label='Email' variant="outlined" fullWidth value={email} onChange={handleEmailChange} error={Boolean(emailError)} helperText={emailError} />
           <TextField label='Password' variant="outlined" fullWidth value={password} onChange={handlePasswordChange} error={Boolean(passwordError)} helperText={passwordError} />
           <TextField label='Confirm Password' variant="outlined" fullWidth value={confirmpassword} onChange={handleConfirmPasswordChange} error={Boolean(confirmpasswordError)} helperText={confirmpasswordError} />
-            <Button className={classes.submit} variant="contained" color="primary" type="submit" fullWidth onClick={signup}>
-              Sign up
-            </Button>
-            {
-                    !signupError &&
-                    <Box>
-                        <Typography color="secondary">
-                            {signupError}
-                        </Typography>
-                    </Box>
-                }
+          <Button className={classes.submit} variant="contained" type="submit" fullWidth onClick={signup} style={{ backgroundColor: 'black',}}sx={{ color: 'white' }}>
+            Sign up
+          </Button>
+          {
+            !signupError &&
+            <Box>
+              <Typography color="secondary">
+                {signupError}
+              </Typography>
+            </Box>
+          }
         </form>
         <Grid container justifyContent="center">
           <Grid item>
+          Already have an account?
             <Link to='/login' className={classes.link}>
-              Already have an account? Sign in
+              <Button className={classes.submit} variant="contained" type="submit" fullWidth style={{ backgroundColor: 'black',}}sx={{ color: 'white' }}>
+                Sign in
+              </Button>
             </Link>
           </Grid>
         </Grid>

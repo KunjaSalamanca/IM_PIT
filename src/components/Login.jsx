@@ -1,7 +1,7 @@
 import { Button, Container, Grid, Paper, TextField, Typography, Box } from "@mui/material";
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { Link, useNavigate, } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import supabase from "../Client"
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(4)
     },
     logo: {
-        width: 100,
+        width: 300,
         height: 100,
         marginBottom: theme.spacing(2)
     }
@@ -80,11 +80,20 @@ export default function Login() {
             setPasswordError('');
         }
     };
+
     return (
-        <Container maxWidth='xs'>
-            <Paper className={classes.paper} elevation={3}>
-                <img className={classes.logo} src='/n1.gif' alt='logo' width='50' height='50' />
-                <Typography variant="h4" align="center" gutterBottom>
+        <Container maxWidth='false' style={{ height: '100vh', backgroundColor: 'black' }}>
+            <Paper className={classes.paper} elevation={5} style={{
+                backgroundColor: 'orange',
+                margin: 'auto',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                height: '400px',
+                width: '400px'
+            }}>
+                <Typography variant="h4" align="center" gutterBottom >
                     Login
                 </Typography>
                 {!errormessage && (
@@ -95,13 +104,13 @@ export default function Login() {
                 <form className={classes.form}>
                     <TextField label='Email' variant="outlined" fullWidth value={email} onChange={handleEmailChange} error={Boolean(emailError)} helperText={emailError} />
                     <TextField label='Password' variant="outlined" fullWidth value={password} onChange={handlePasswordChange} error={Boolean(passwordError)} helperText={passwordError} />
-                    <Button className={classes.submit} variant="contained" color="primary" type="submit" fullWidth onClick={login}>
+                    <Button className={classes.submit} variant="contained" color="primary" type="submit" fullWidth onClick={login} style={{ backgroundColor: 'black', fontFamily: 'Arial, sans-serif'}}sx={{ color: 'white' }}>
                         Login
                     </Button>
                 </form>
                 <Grid container justifyContent="center">
                     <Grid item>
-                        <Link to='/signup' className={classes.link}>
+                        <Link to='/signup' className={classes.link} sx={{ color: 'black', fontFamily: 'Arial, sans-serif'}}>
                             Don't have an account? Sign up
                         </Link>
                     </Grid>
