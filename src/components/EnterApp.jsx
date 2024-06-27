@@ -27,17 +27,24 @@ export default function EnterApp() {
                         </Button>
                     </Link>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={6}>
+                    <Grid item xs={12} md={4} lg={4}>
                     <Link to='/staff'>
                         <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
                             New Staff
                         </Button>
                     </Link>    
                     </Grid>
-                    <Grid item xs={12} md={4} lg={6}>
+                    <Grid item xs={12} md={4} lg={4}>
                     <Link to='/appointments'>
                         <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
                             New Appointment
+                        </Button>
+                    </Link> 
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={4}>
+                    <Link to='/medication'>
+                        <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
+                            New Medication
                         </Button>
                     </Link> 
                     </Grid>

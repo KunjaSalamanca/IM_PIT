@@ -29,17 +29,24 @@ export default function ManageT() {
                         </Button>
                         </Link>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={6}>
+                    <Grid item xs={12} md={4} lg={4}>
                     <Link to='/stable'>
                         <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
                             Check Staff
                         </Button>
                         </Link>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={6}>
+                    <Grid item xs={12} md={4} lg={4}>
                     <Link to='/dashboard'>
                         <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
                             Check Appointment
+                        </Button>
+                        </Link>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={4}>
+                    <Link to='/mtable'>
+                        <Button variant="contained" sx={{ backgroundColor: "#98FF98", height: 240, width: '100%' }}>
+                            Check Medications
                         </Button>
                         </Link>
                     </Grid>

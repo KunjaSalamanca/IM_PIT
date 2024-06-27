@@ -13,7 +13,7 @@ export default function InPatientsTable() {
 
   async function fetchInPatients() {
     const { data, error } = await supabase
-      .from("In_Patients") // Table name should match the actual table name in the database
+      .from("in_patients") // Table name should match the actual table name in the database
       .select("*");
     if (error) {
       console.error(error);
@@ -25,9 +25,9 @@ export default function InPatientsTable() {
   const handleDelete = async (id) => {
     try {
       const { error } = await supabase
-        .from("In_Patients") 
+        .from("in_patients") 
         .delete()
-        .eq("In_Patient_Number", id);
+        .eq("in_patient_number", id);
       if (error) {
         console.error(error);
       } else {
@@ -64,14 +64,14 @@ export default function InPatientsTable() {
         <TableBody>
           {inPatients.map((inPatient, index) => (
             <TableRow key={`row-${index}`}>
-              <TableCell>{inPatient.In_Patient_Number}</TableCell>
+              <TableCell>{inPatient.in_patient_number}</TableCell>
               <TableCell>{inPatient.ward_no}</TableCell>
-              <TableCell>{inPatient.Bed_Number}</TableCell>
-              <TableCell>{inPatient.Date_Placed_on_Waiting_List}</TableCell>
-              <TableCell>{inPatient.Expected_Duration_of_Stay}</TableCell>
-              <TableCell>{inPatient.Date_Placed_in_Ward}</TableCell>
-              <TableCell>{inPatient.Date_Expected_to_Leave_Ward}</TableCell>
-              <TableCell>{inPatient.Actual_Date_Left_Ward}</TableCell>
+              <TableCell>{inPatient.bed_number}</TableCell>
+              <TableCell>{inPatient.date_placed_on_waiting_list}</TableCell>
+              <TableCell>{inPatient.expected_duration_of_stay}</TableCell>
+              <TableCell>{inPatient.date_placed_in_ward}</TableCell>
+              <TableCell>{inPatient.date_expected_to_leave_ward}</TableCell>
+              <TableCell>{inPatient.actual_date_left_ward}</TableCell>
               <TableCell>
                 <Button variant="contained" color="error" onClick={() => handleDelete(inPatient.In_Patient_Number)}>
                   Delete
